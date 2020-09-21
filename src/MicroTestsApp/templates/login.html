@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+{% block include %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="block" id="login-form">
+    <h1 style="margin-top: 0;">Вход</h1>
+    <form method="POST" novalidate>
+        {% include 'render_form.html' with form=form %}
+        <input type="submit" value="Войти" class="button-green">
+    </form>
+</div>
+<script>
+    $('form').submit(function(event) {
+        event.preventDefault()  //Отменяем отправку формы
+        //Перенаправляем пользователя на главную страницу, если нет ошибок
+        ajaxSubmitForm(event.target, function() {
+            document.location.href = '/'
+        })
+    })
+</script>
+{% endblock %}

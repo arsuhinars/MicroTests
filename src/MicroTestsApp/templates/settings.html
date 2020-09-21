@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+{% block include %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+<script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="block">
+    <ul class="menu">
+        <h2>Настройки</h2>
+        <li class="general-button">Основное</li>
+        <li class="password-button">Изменить пароль</li>
+        <li class="email-button">Изменить E-Mail</li>
+    </ul>
+    <div class="settings general-menu">
+        <h2>Основное</h2>
+        <form enctype="multipart/form-data" method="POST" novalidate>
+            {% if user.avatar %}
+            <div class="avatar-img" style="background-image: url(/{{ user.avatar.url }})"></div>
+            {% else %}
+            <div class="avatar-img" style="background-image: url({% static 'images/avatar_64.png' %})"></div>
+            {% endif %}
+            {% include 'render_form.html' with form=general_form %}
+            <input type="submit" value="Сохранить" class="button-green">
+        </form>
+    </div>
+    <div class="settings password-menu">
+        <h2>Изменить пароль</h2>
+        <form class="change_password_form" method="POST" action="/change_password/" novalidate>
+            {% include 'render_form.html' with form=change_password_form %}
+            <input type="submit" value="Изменить" class="button-green">
+        </form>
+        <form class="confirm_code_form" method="POST" action="/change_password/" novalidate>
+            <p>На вашу почту было отправленно письмо к кодом подтверждения.
+                Для смены пароля укажите его в поле ниже:</p>
+            {% include 'render_form.html' with form=confirm_action_form %}
+            <input type="submit" value="Отправить" class="button-green">
+        </form>
+        <div class="password_confirmed_box">
+            Пароль был успешно изменен!
+        </div>
+    </div>
+    <div class="settings email-menu">
+        <h2>Изменить E-Mail</h2>
+        <p style="line-height: 25px;">Текущий адрес электронной почты:<br>{{ user.email }}</p>
+        <form class="change_email_form" method="POST" action="/change_email/" novalidate>
+            {% include 'render_form.html' with form=change_email_form %}
+            <input type="submit" value="Изменить" class="button-green">
+        </form>
+        <form class="confirm_code_form" method="POST" action="/change_email/" novalidate>
+            <p>На новый почтовый адрес было отправленно письмо к кодом подтверждения.
+                Для смены электронной почты укажите его в поле ниже:</p>
+            {% include 'render_form.html' with form=confirm_action_form %}
+            <input type="submit" value="Отправить" class="button-green">
+        </form>
+        <div class="email_confirmed_box">
+            Адрес электронной почты был успешно изменен!
+        </div>
+    </div>
+</div>
+{% endblock %}

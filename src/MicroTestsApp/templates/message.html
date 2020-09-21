@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ subject }}
+{% endblock %}
+{% block include %}
+<link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="block">
+    <h1 style="margin-top: 0;">{{ title }}</h1>
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+    {% for button in buttons %}
+    <button class="button-green" onclick="document.location.href='{{ button.url }}'">{{ button.text }}</button><br>
+    {% endfor %}
+</div>
+{% endblock %}

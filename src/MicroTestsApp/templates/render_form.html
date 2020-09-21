@@ -1,0 +1,18 @@
+{# Шаблон для рендеринга формы #}
+{% csrf_token %}
+<ul class="non-field-errors">
+{% for error in form.non_field_errors %}
+    <li>{{ error }}</li>
+{% endfor %}
+</ul>
+{% for field in form %}
+    {% if field.label %}
+        {{ field.label_tag }}<br>
+    {% endif %}
+    {{ field }}<br>
+    <ul class="errors-list" id="{{ field.name }}_errors">
+    {% for error in field.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}

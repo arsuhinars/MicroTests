@@ -1,0 +1,346 @@
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Текст */
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a:active, a:hover, a {
+    color: #2d2d2d;
+    text-decoration: none;
+}
+
+/* ==========> Стили шапки  <========== */
+
+header {
+    width: 100%;
+    height: 50px;
+    background-color: #9fee00;
+    box-shadow: #90d800 0 4px 1px;
+    user-select: none;
+}
+
+.top-menu {
+    display: inline-block;
+    list-style: none;
+    margin: 0;
+    margin-left: 50px;
+    padding: 0;
+}
+
+.top-menu > li {
+    float: left;
+}
+
+.top-menu a {
+    display: block;
+    padding: 0 15px;
+    line-height: 50px;
+    transition: 0.3s;
+}
+
+.top-menu a:hover {
+    background-color: #b9f73e;
+}
+
+/* Лого */
+.header-logo {
+    width: 155px;
+    display: block;
+    float: left;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.header-logo > img {
+    float: left;
+    margin-top: 2.5px;
+    height: 45px;
+}
+
+/* Кнопка входа/регистрации */
+.login-button, .register-button {
+    display: block;
+    float: right;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 0px 15px;
+    transition: 0.3s;
+}
+
+.register-button {
+    margin-right: 10px;
+}
+
+.login-button:hover, .register-button:hover {
+    background-color: #b9f73e;
+}
+
+/* Меню авторизованого пользователя */
+.header-user {
+    display: block;
+    float: right;
+    line-height: 50px;
+    font-size: 18px;
+    padding: 0px 10px;
+    margin-right: 15px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.header-user:hover {
+    background-color: #b9f73e;
+}
+
+.header-user img {
+    float: right;
+    height: 40px;
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+/* Меню гамбургер */
+#header-menu {
+    display: block;
+    float: left;
+    height: 100%;
+    transition: 0.3s;
+}
+
+#header-menu > img {
+    margin: 10px 10px;
+    height: 30px;
+}
+
+#header-menu:hover {
+    background-color: #b9f73e;
+}
+
+/* Выкидываемый список (для мобильных устройств) */
+.mobile-menu {
+    display: none;
+    width: 100%;
+    margin-top: 4px;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+
+.mobile-menu ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.mobile-menu a, .user-menu li a {
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.mobile-menu a:hover, .user-menu li a:hover {
+    background-color: #eeeeee;
+}
+
+.line {
+    width: 100%;
+    height: 2px;
+    margin: 5px 0;
+    background-color: #dddddd;
+}
+
+.mobile-user {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    height: 40px;
+}
+
+.mobile-user img {
+    height: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+    margin-right: 5px;
+    align-self: center;
+}
+
+.mobile-user span {
+    align-self: center;
+}
+
+/* Выкидываемое меню пользователя */
+.user-menu {
+    position: absolute;
+    width: 150px;
+    top: 54px;
+    right: 0;
+    padding: 0 20px 20px 20px;
+    overflow: hidden;
+}
+
+.user-menu ul {
+    background-color: white;
+    width: 150px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ==========> Стили подвала  <========== */
+footer {
+    width: 100%;
+    border-top: #dddddd solid 2px;
+    background-color: white;
+}
+
+.copyright {
+    text-align: right;
+    color: #444444;
+    font-size: 12px;
+    line-height: 18px;
+    margin: 5px;
+}
+
+/* Блок с контентом */
+.block {
+    display: block;
+    padding: 30px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ==========> Стили кнопок  <========== */
+
+.button-green, .button-blue, .button-yellow {
+    display: inline-block;
+    border: 0;
+    outline: none;
+    margin: 10px 0;
+    padding: 5px 10px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #9fee00;
+    transition: 0.3s;
+}
+
+.button-green:disabled, .button-blue:disabled, .button-yellow:disabled {
+    background-color: #bbbbbb;
+    cursor: default;
+}
+
+.button-green:enabled:hover {
+    background-color: #b9f73e;
+}
+
+.button-blue {
+    background-color: #099999;
+}
+
+.button-blue:enabled:hover {
+    background-color: #33cccc;
+}
+
+.button-yellow {
+    background-color: #ffd300;
+}
+
+.button-yellow:enabled:hover {
+    background-color: #ffde40;
+}
+
+/* Поля для ввода текста */
+input[type=text],
+input[type=email],
+input[type=password] {
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #86b32d;
+    transition: 0.3s;
+}
+
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus {
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #9fee00;
+    transition: 0.3s;
+}
+
+input:disabled {
+    color: #6c6c6c;
+    border-bottom-color: #b9b9b9;
+}
+
+/* ==========> Стили для формы  <========== */
+
+/* Заголовки полей формы */
+form label {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+form label:first-of-type {
+    margin-top: 0;
+}
+
+/* Поля формы */
+form input {
+    width: 200px;
+    max-width: 90%;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Кнопка отправки формы */
+form input[type=submit] {
+    width: auto;
+    display: inline-block;
+    margin-top: 30px;
+}
+
+/* Списки ошибок полей формы */
+.errors-list, .non-field-errors {
+    color: red;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.errors-list li, .non-field-errors li {
+    font-size: 12px;
+}
+
+.errors-list li {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+/* Список ошибок, не относящихся к какому-либо полю */
+.non-field-errors {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Блок с каким-то сообщением */
+.message {
+    display: inline-block;
+    background-color: #eeeeee;
+    padding: 15px;
+    border-radius: 10px;
+    text-overflow: clip;
+}
