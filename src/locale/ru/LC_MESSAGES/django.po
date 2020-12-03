@@ -1,0 +1,283 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-03 09:35+0400\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\MicroTestsApp\models.py:36
+msgid "User"
+msgstr "Пользователь"
+
+#: .\MicroTestsApp\models.py:37
+msgid "Users"
+msgstr "Пользователи"
+
+#: .\MicroTestsApp\models.py:40
+msgid "First name"
+msgstr "Имя"
+
+#: .\MicroTestsApp\models.py:41
+msgid "Last name"
+msgstr "Фамилия"
+
+#: .\MicroTestsApp\models.py:42
+msgid "Avatar"
+msgstr "Аватар"
+
+#: .\MicroTestsApp\models.py:43 .\MicroTestsApp\templates\profile.html:22
+msgid "Registration date"
+msgstr "Дата регистрации"
+
+#: .\MicroTestsApp\models.py:44
+msgid "Last login"
+msgstr "Последний раз входил"
+
+#: .\MicroTestsApp\models.py:45
+msgid "Confirm key"
+msgstr "Ключ подверждения"
+
+#: .\MicroTestsApp\models.py:46
+msgid "Is confirmed"
+msgstr "Подвержден ли"
+
+#: .\MicroTestsApp\models.py:47
+msgid "Is active"
+msgstr "Активен ли"
+
+#: .\MicroTestsApp\models.py:48
+msgid "Is admin"
+msgstr "Является администратором"
+
+#: .\MicroTestsApp\models.py:90
+msgid "Notification"
+msgstr "Уведомление"
+
+#: .\MicroTestsApp\models.py:91 .\MicroTestsApp\templates\base.html:41
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: .\MicroTestsApp\models.py:94
+msgid "Text"
+msgstr "Текст"
+
+#: .\MicroTestsApp\models.py:95
+msgid "URL"
+msgstr "URL"
+
+#: .\MicroTestsApp\models.py:96
+msgid "Is read"
+msgstr "Прочитано"
+
+#: .\MicroTestsApp\models.py:97
+msgid "Receiving user"
+msgstr "Получатель"
+
+#: .\MicroTestsApp\models.py:98
+msgid "Send date"
+msgstr "Отправить"
+
+#: .\MicroTestsApp\templates\base.html:23
+#: .\MicroTestsApp\templates\base.html:50
+#: .\MicroTestsApp\templates\index.html:5
+msgid "Main"
+msgstr "Главная"
+
+#: .\MicroTestsApp\templates\base.html:24
+#: .\MicroTestsApp\templates\base.html:51
+msgid "Search tests"
+msgstr "Найти тесты"
+
+#: .\MicroTestsApp\templates\base.html:25
+#: .\MicroTestsApp\templates\base.html:52
+msgid "My tests"
+msgstr "Мои тесты"
+
+#: .\MicroTestsApp\templates\base.html:28
+#: .\MicroTestsApp\templates\base.html:56
+#: .\MicroTestsApp\templates\register.html:5
+#: .\MicroTestsApp\templates\register.html:12 .\MicroTestsApp\views.py:240
+msgid "Registration"
+msgstr "Регистрация"
+
+#: .\MicroTestsApp\templates\base.html:29
+#: .\MicroTestsApp\templates\base.html:55
+#: .\MicroTestsApp\templates\login.html:5
+#: .\MicroTestsApp\templates\login.html:12
+#: .\MicroTestsApp\templates\login.html:15 .\MicroTestsApp\views.py:256
+msgid "Login"
+msgstr "Войти"
+
+#: .\MicroTestsApp\templates\base.html:66
+#: .\MicroTestsApp\templates\base.html:90
+msgid "My profile"
+msgstr "Мой профиль"
+
+#: .\MicroTestsApp\templates\base.html:68
+#: .\MicroTestsApp\templates\base.html:91
+#: .\MicroTestsApp\templates\settings.html:5
+msgid "Settings"
+msgstr "Настройки"
+
+#: .\MicroTestsApp\templates\base.html:69
+#: .\MicroTestsApp\templates\base.html:92
+msgid "Logout"
+msgstr "Выйти"
+
+#: .\MicroTestsApp\templates\base.html:84
+msgid "You have not notifications."
+msgstr "У вас нет уведомлений"
+
+#: .\MicroTestsApp\templates\base.html:102
+msgid "Site creator"
+msgstr "Создатель сайта"
+
+#: .\MicroTestsApp\templates\profile.html:6
+msgid "Profile"
+msgstr "Профиль"
+
+#: .\MicroTestsApp\templates\profile.html:23
+msgid "Last time was online"
+msgstr "Последний раз был в сети"
+
+#: .\MicroTestsApp\templates\register.html:15
+msgid "Registrate"
+msgstr "Зарегистрироваться"
+
+#: .\MicroTestsApp\templates\settings.html:15
+#: .\MicroTestsApp\templates\settings.html:20
+msgid "General"
+msgstr "Общие"
+
+#: .\MicroTestsApp\templates\settings.html:16
+#: .\MicroTestsApp\templates\settings.html:32
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: .\MicroTestsApp\templates\settings.html:17
+#: .\MicroTestsApp\templates\settings.html:47
+msgid "Change E-Mail"
+msgstr "Изменить E-Mail"
+
+#: .\MicroTestsApp\templates\settings.html:28
+msgid "Save"
+msgstr "Сохранить"
+
+#: .\MicroTestsApp\templates\settings.html:35
+#: .\MicroTestsApp\templates\settings.html:51
+msgid "Change"
+msgstr "Изменить"
+
+#: .\MicroTestsApp\templates\settings.html:38
+msgctxt "User settings page"
+msgid "Change password message"
+msgstr ""
+"На вашу почту было отправленно письмо к кодом подтверждения.\n"
+"Для смены пароля укажите его в поле ниже"
+
+#: .\MicroTestsApp\templates\settings.html:40
+#: .\MicroTestsApp\templates\settings.html:56
+msgid "Send"
+msgstr "Отправить"
+
+#: .\MicroTestsApp\templates\settings.html:43
+msgid "Password was successfuly changed"
+msgstr "Пароль был успешно изменен"
+
+#: .\MicroTestsApp\templates\settings.html:48
+msgid "Current E-Mail"
+msgstr "Текущий E-Mail"
+
+#: .\MicroTestsApp\templates\settings.html:54
+msgctxt "User settings page"
+msgid "Change email message"
+msgstr ""
+"На новый почтовый адрес было отправленно письмо к кодом подтверждения.\n"
+"Для смены электронной почты укажите его в поле ниже"
+
+#: .\MicroTestsApp\templates\settings.html:59
+msgid "E-Mail was successfuly changed"
+msgstr "E-Mail был успешно изменен"
+
+#. Translators: Сообщение о указании неверного кода из сообщения
+#: .\MicroTestsApp\views.py:104 .\MicroTestsApp\views.py:156
+msgid "Wrong code was written"
+msgstr "Указан неверный код"
+
+#: .\MicroTestsApp\views.py:113
+msgid "Passwords should be different"
+msgstr "Пароли должны отличатся"
+
+#: .\MicroTestsApp\views.py:122
+msgid "Password changing message subject"
+msgstr "MicroTests - смена пароля"
+
+#: .\MicroTestsApp\views.py:123
+msgid "Password changing message text"
+msgstr ""
+"На сайте была запрошена смена пароля. Код для смены пароля указан ниже. Если "
+"вы этого не делали, то проигнорируйте это письмо.\n"
+"Код подверждения: {0}\n"
+"\n"
+"Не пытайтесь отвечать на это письмо. Оно было отправлено автоматически."
+
+#: .\MicroTestsApp\views.py:163
+msgid "Email should differ from old"
+msgstr "Адрес почты должен отличатся от старой"
+
+#: .\MicroTestsApp\views.py:172
+msgid "Email changing message subject"
+msgstr "MicroTests - смена почты"
+
+#: .\MicroTestsApp\views.py:173
+msgid "Email changing message text"
+msgstr ""
+"На сайте был сделан запрос на изменение электронной почты на данный. Код для "
+"смены почты указан ниже. Если вы этого не делали, то проигнорируйте это "
+"письмо.\n"
+"Код подверждения: {0}\n"
+"\n"
+"Не пытайтесь отвечать на это письмо. Оно было отправлено автоматически."
+
+#: .\MicroTestsApp\views.py:226
+msgid "Registration confirm message subject"
+msgstr "MicroTests - подверждение аккаунта"
+
+#: .\MicroTestsApp\views.py:227
+msgid "Registration confirm message text"
+msgstr ""
+"На ваш адрес электронной почты был зарегистрирован аккаунт на сайте "
+"MicroTests. Если вы не регистрировались на нашем сайте, то проигнорируйте "
+"это сообщение. Для активации аккаунта перейдите по ссылке:\n"
+"{0}.\n"
+"\n"
+"Не пытайтесь отвечать на это письмо. Оно было отправлено автоматически."
+
+#: .\MicroTestsApp\views.py:241
+msgid "Thank you for registration."
+msgstr "Спасибо за регистрацию"
+
+#. Translators: сообщение говорящее, что необходимо подвердить аккаунт через отправленное письмо
+#: .\MicroTestsApp\views.py:243
+msgid "Registration confirm page text"
+msgstr ""
+"Чтобы закончить регистрацию вы должны перейти по ссылке, указанной в "
+"высланном письме на ваш электронный адрес."
+
+#. Translators: сообщение, появляющееся после подверждения аккаунта
+#: .\MicroTestsApp\views.py:254
+msgid "Your account was successful confirm."
+msgstr "Ваш аккаунт был успешно подвержден. Теперь вы можете войти в него."
+
+#: .\MicroTestsApp\views.py:262
+msgid "Back to main"
+msgstr "Вернуться на главную"
+
+#: .\MicroTests\settings.py:103
+msgid "Russian"
+msgstr "Русский"
+
+#: .\MicroTests\settings.py:104
+msgid "English"
+msgstr "Английский"

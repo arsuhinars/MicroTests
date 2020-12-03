@@ -1,6 +1,7 @@
 # Django settings for MicroTests project.
 
 import os
+from django.utils.translation import gettext_lazy as _
 
 # Получаем секретные настройки(такие как SECRET_KEY) из отдельного файла
 from MicroTests.secret_settings import *
@@ -34,6 +35,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'MicroTests.urls'
@@ -97,6 +99,11 @@ AUTH_USER_MODEL = 'MicroTestsApp.User'
 
 LANGUAGE_CODE = 'ru'
 
+LANGUAGES = [
+    ('ru', _('Russian')),
+    ('en', _('English')),
+]
+
 TIME_ZONE = 'Europe/Saratov'
 
 USE_I18N = True
@@ -105,6 +112,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = [
+    'locale/'
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Главная{% endblock %}
+{% block title %}{% trans "Login" %}{% endblock %}
 {% block include %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
 
 {% block main %}
 <div class="block" id="login-form">
-    <h1 style="margin-top: 0;">Вход</h1>
+    <h1 style="margin-top: 0;">{% trans "Login" %}</h1>
     <form method="POST" novalidate>
         {% include 'render_form.html' with form=form %}
-        <input type="submit" value="Войти" class="button-green">
+        <input type="submit" value="{% trans "Login" %}" class="button-green">
     </form>
 </div>
 <script>

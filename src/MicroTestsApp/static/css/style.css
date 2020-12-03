@@ -84,6 +84,40 @@ header {
     background-color: #b9f73e;
 }
 
+/* Кнопка уведомлений */
+.header-notifications {
+    display: block;
+    float: right;
+    font-size: 18px;
+    line-height: 50px;
+    /* height: 50px; */
+    padding: 0 10px;
+    margin-right: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* Кнопка уведомлений */
+.header-notifications img {
+    float: right;
+    height: 30px;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+/* Кружочек уведомлений */
+.notifications-circle {
+    position: relative;
+    float: right;
+    background-color: #ff4444;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    top: 8px;
+    right: 3px;
+    /* margin-right: 5px; */
+}
+
 /* Меню авторизованого пользователя */
 .header-user {
     display: block;
@@ -96,7 +130,7 @@ header {
     cursor: pointer;
 }
 
-.header-user:hover {
+.header-user:hover, .header-notifications:hover {
     background-color: #b9f73e;
 }
 
@@ -142,7 +176,7 @@ header {
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 }
 
-.mobile-menu a, .user-menu li a {
+.mobile-menu a, .user-menu a, .notifications-menu a {
     display: block;
     width: 100%;
     line-height: 40px;
@@ -150,7 +184,7 @@ header {
     transition: 0.3s;
 }
 
-.mobile-menu a:hover, .user-menu li a:hover {
+.mobile-menu a:hover, .user-menu a:hover, .notifications-menu a:hover {
     background-color: #eeeeee;
 }
 
@@ -197,6 +231,43 @@ header {
     padding: 0;
     list-style: none;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Выкидываемое меню уведомлений */
+.notifications-menu {
+    position: absolute;
+    width: 280px;
+    top: 54px;
+    right: 150px;
+    padding: 0 20px 20px 20px;
+    overflow: hidden;
+}
+
+.notifications-menu ul {
+    background-color: white;
+    width: 280px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.notifications-menu a {
+    display: block;
+    text-align: left;
+    line-height: 25px;
+    padding: 5px 15px;
+    cursor: pointer;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.unread-notification-circle {
+    display: inline-block;
+    background-color: #ff4444;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
 }
 
 /* ==========> Стили подвала  <========== */

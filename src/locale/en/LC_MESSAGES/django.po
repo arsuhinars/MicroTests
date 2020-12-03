@@ -1,0 +1,276 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR arsuhinars@gmail.com, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-12-03 09:35+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\MicroTestsApp\models.py:36
+msgid "User"
+msgstr "User"
+
+#: .\MicroTestsApp\models.py:37
+#, fuzzy
+#| msgid "User"
+msgid "Users"
+msgstr "Users"
+
+#: .\MicroTestsApp\models.py:40
+msgid "First name"
+msgstr "First name"
+
+#: .\MicroTestsApp\models.py:41
+msgid "Last name"
+msgstr "Last name"
+
+#: .\MicroTestsApp\models.py:42
+msgid "Avatar"
+msgstr "Avatar"
+
+#: .\MicroTestsApp\models.py:43 .\MicroTestsApp\templates\profile.html:22
+msgid "Registration date"
+msgstr "Registration date"
+
+#: .\MicroTestsApp\models.py:44
+msgid "Last login"
+msgstr "Last login"
+
+#: .\MicroTestsApp\models.py:45
+msgid "Confirm key"
+msgstr "Confirm key"
+
+#: .\MicroTestsApp\models.py:46
+msgid "Is confirmed"
+msgstr "Is confirmed"
+
+#: .\MicroTestsApp\models.py:47
+msgid "Is active"
+msgstr "Is active"
+
+#: .\MicroTestsApp\models.py:48
+msgid "Is admin"
+msgstr "Is admin"
+
+#: .\MicroTestsApp\models.py:90
+msgid "Notification"
+msgstr ""
+
+#: .\MicroTestsApp\models.py:91 .\MicroTestsApp\templates\base.html:41
+msgid "Notifications"
+msgstr ""
+
+#: .\MicroTestsApp\models.py:94
+msgid "Text"
+msgstr ""
+
+#: .\MicroTestsApp\models.py:95
+msgid "URL"
+msgstr ""
+
+#: .\MicroTestsApp\models.py:96
+msgid "Is read"
+msgstr ""
+
+#: .\MicroTestsApp\models.py:97
+msgid "Receiving user"
+msgstr ""
+
+#: .\MicroTestsApp\models.py:98
+#, fuzzy
+#| msgid "Send"
+msgid "Send date"
+msgstr "Send"
+
+#: .\MicroTestsApp\templates\base.html:23
+#: .\MicroTestsApp\templates\base.html:50
+#: .\MicroTestsApp\templates\index.html:5
+msgid "Main"
+msgstr "Main"
+
+#: .\MicroTestsApp\templates\base.html:24
+#: .\MicroTestsApp\templates\base.html:51
+msgid "Search tests"
+msgstr "Search tests"
+
+#: .\MicroTestsApp\templates\base.html:25
+#: .\MicroTestsApp\templates\base.html:52
+msgid "My tests"
+msgstr "My tests"
+
+#: .\MicroTestsApp\templates\base.html:28
+#: .\MicroTestsApp\templates\base.html:56
+#: .\MicroTestsApp\templates\register.html:5
+#: .\MicroTestsApp\templates\register.html:12 .\MicroTestsApp\views.py:240
+msgid "Registration"
+msgstr "Registration"
+
+#: .\MicroTestsApp\templates\base.html:29
+#: .\MicroTestsApp\templates\base.html:55
+#: .\MicroTestsApp\templates\login.html:5
+#: .\MicroTestsApp\templates\login.html:12
+#: .\MicroTestsApp\templates\login.html:15 .\MicroTestsApp\views.py:256
+msgid "Login"
+msgstr "Login"
+
+#: .\MicroTestsApp\templates\base.html:66
+#: .\MicroTestsApp\templates\base.html:90
+msgid "My profile"
+msgstr "My profile"
+
+#: .\MicroTestsApp\templates\base.html:68
+#: .\MicroTestsApp\templates\base.html:91
+#: .\MicroTestsApp\templates\settings.html:5
+msgid "Settings"
+msgstr "Settings"
+
+#: .\MicroTestsApp\templates\base.html:69
+#: .\MicroTestsApp\templates\base.html:92
+msgid "Logout"
+msgstr "Logout"
+
+#: .\MicroTestsApp\templates\base.html:84
+msgid "You have not notifications."
+msgstr ""
+
+#: .\MicroTestsApp\templates\base.html:102
+msgid "Site creator"
+msgstr "Site creator"
+
+#: .\MicroTestsApp\templates\profile.html:6
+msgid "Profile"
+msgstr "Profile"
+
+#: .\MicroTestsApp\templates\profile.html:23
+msgid "Last time was online"
+msgstr "Last time was online"
+
+#: .\MicroTestsApp\templates\register.html:15
+msgid "Registrate"
+msgstr "Registrate"
+
+#: .\MicroTestsApp\templates\settings.html:15
+#: .\MicroTestsApp\templates\settings.html:20
+msgid "General"
+msgstr "General"
+
+#: .\MicroTestsApp\templates\settings.html:16
+#: .\MicroTestsApp\templates\settings.html:32
+msgid "Change password"
+msgstr "Change password"
+
+#: .\MicroTestsApp\templates\settings.html:17
+#: .\MicroTestsApp\templates\settings.html:47
+msgid "Change E-Mail"
+msgstr "Change E-Mail"
+
+#: .\MicroTestsApp\templates\settings.html:28
+msgid "Save"
+msgstr "Save"
+
+#: .\MicroTestsApp\templates\settings.html:35
+#: .\MicroTestsApp\templates\settings.html:51
+msgid "Change"
+msgstr "Change"
+
+#: .\MicroTestsApp\templates\settings.html:38
+msgctxt "User settings page"
+msgid "Change password message"
+msgstr "Change password message"
+
+#: .\MicroTestsApp\templates\settings.html:40
+#: .\MicroTestsApp\templates\settings.html:56
+msgid "Send"
+msgstr "Send"
+
+#: .\MicroTestsApp\templates\settings.html:43
+msgid "Password was successfuly changed"
+msgstr "Password was successfuly changed"
+
+#: .\MicroTestsApp\templates\settings.html:48
+msgid "Current E-Mail"
+msgstr "Current E-Mail"
+
+#: .\MicroTestsApp\templates\settings.html:54
+msgctxt "User settings page"
+msgid "Change email message"
+msgstr "Change email message"
+
+#: .\MicroTestsApp\templates\settings.html:59
+msgid "E-Mail was successfuly changed"
+msgstr "E-Mail was successfuly changed"
+
+#. Translators: Сообщение о указании неверного кода из сообщения
+#: .\MicroTestsApp\views.py:104 .\MicroTestsApp\views.py:156
+msgid "Wrong code was written"
+msgstr "Wrong code was written"
+
+#: .\MicroTestsApp\views.py:113
+msgid "Passwords should be different"
+msgstr "Passwords should be different"
+
+#: .\MicroTestsApp\views.py:122
+msgid "Password changing message subject"
+msgstr "Password changing message subject"
+
+#: .\MicroTestsApp\views.py:123
+msgid "Password changing message text"
+msgstr "Password changing message text"
+
+#: .\MicroTestsApp\views.py:163
+msgid "Email should differ from old"
+msgstr "Email should differ from old"
+
+#: .\MicroTestsApp\views.py:172
+msgid "Email changing message subject"
+msgstr "Email changing message subject"
+
+#: .\MicroTestsApp\views.py:173
+msgid "Email changing message text"
+msgstr "Email changing message text"
+
+#: .\MicroTestsApp\views.py:226
+msgid "Registration confirm message subject"
+msgstr "Registration confirm message subject"
+
+#: .\MicroTestsApp\views.py:227
+msgid "Registration confirm message text"
+msgstr "Registration confirm message text"
+
+#: .\MicroTestsApp\views.py:241
+msgid "Thank you for registration."
+msgstr "Thank you for registration."
+
+#. Translators: сообщение говорящее, что необходимо подвердить аккаунт через отправленное письмо
+#: .\MicroTestsApp\views.py:243
+msgid "Registration confirm page text"
+msgstr "Registration confirm page text"
+
+#. Translators: сообщение, появляющееся после подверждения аккаунта
+#: .\MicroTestsApp\views.py:254
+msgid "Your account was successful confirm."
+msgstr "Your account was successful confirmed."
+
+#: .\MicroTestsApp\views.py:262
+msgid "Back to main"
+msgstr "Back to main"
+
+#: .\MicroTests\settings.py:103
+msgid "Russian"
+msgstr "Russian"
+
+#: .\MicroTests\settings.py:104
+msgid "English"
+msgstr "English"

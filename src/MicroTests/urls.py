@@ -26,6 +26,7 @@ urlpatterns = [
     path('settings/', views.settings),
     path('change_password/', views.change_password),
     path('change_email/', views.change_email),
+    path('read_notify/', views.read_notify),
     path('login/', views.login),
     path('logout/', views.logout),
     path('register/', views.register),

@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Регистрация{% endblock %}
+{% block title %}{% trans "Registration" %}{% endblock %}
 {% block include %}
 <link rel="stylesheet" href="{% static 'css/register.css' %}">
 {% endblock %}
 
 {% block main %}
 <div class="block" id="register-form">
-    <h1 style="margin-top: 0;">Регистрация</h1>
+    <h1 style="margin-top: 0;">{% trans "Registration" %}</h1>
     <form method="POST" novalidate>
         {% include 'render_form.html' with form=form %}
-        <input type="submit" value="Зарегестрироваться" class="button-green">
+        <input type="submit" value="{% trans "Registrate" %}" class="button-green">
     </form>
 </div>
 <div style="height: 40px"></div>

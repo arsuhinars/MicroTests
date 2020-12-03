@@ -5,13 +5,14 @@ from random import randint
 from PIL import Image
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.utils.translation import gettext_lazy as _
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.core.files.base import ContentFile
 from django.conf import settings as project_settings
 from MicroTestsApp import forms
-from MicroTestsApp.models import User
+from MicroTestsApp.models import User, Notification
 import MicroTestsApp.utils as utils
 
 
@@ -99,7 +100,8 @@ def change_password(request):
                     # Удаляем коды подверждения из кэша
                     cache.delete_many([code_key, pass_key])
                 else:
-                    form.add_error('code', 'Указан неверный код')
+                    # Translators: Сообщение о указании неверного кода из сообщения
+                    form.add_error('code', _('Wrong code was written'))
             return HttpResponse(form.errors.as_json())
 
         form = forms.ChangePasswordForm(request.POST)
@@ -108,19 +110,17 @@ def change_password(request):
             if user.check_password(form.cleaned_data['old_password']):
                 # Если прошлый пароль равен новому
                 if form.cleaned_data['old_password'] == form.cleaned_data['new_password']:
-                    form.add_error('new_password', 'Пароли должны отличаться')
+                    form.add_error('new_password', _('Passwords should be different'))
                 else:
                     # Сохраняем код для подверждения в кэше
                     if not cache.get(code_key):
                         cache.set(code_key, str(randint(10000, 99999)), 60)
                         cache.set(pass_key, form.cleaned_data['new_password'], 60)
                     # Отправляем код пользователю
-                    user.send_mail('MicroTests - смена пароля',
-                        f'''На сайте была запрошена смена пароля. Код для смены пароля указан ниже.
-Если вы этого не делали, то проигнорируйте это письмо.
-Код подверждения: {cache.get(code_key)}
-
-Не пытайтесь отвечать на это письмо. Оно было отправлено автоматически.''')
+                    # Translators: сообщение с кодом для подверждения смены пароля
+                    user.send_mail(
+                        _('Password changing message subject', 'Email message'),
+                        _('Password changing message text', 'Email message').format(cache.get(code_key)))
             else:   # Если был указан неверный пароль
                 form.add_error('old_password', 'Указан неверный пароль')
         return HttpResponse(form.errors.as_json())
@@ -153,26 +153,24 @@ def change_email(request):
                     # Удаляем коды подверждения из кэша
                     cache.delete_many([code_key, email_key])
                 else:
-                    form.add_error('code', 'Указан неверный код')
+                    form.add_error('code', _('Wrong code was written'))
             return HttpResponse(form.errors.as_json())
 
         form = forms.ChangeEmailForm(request.POST)
         if form.is_valid():
             # Если прошлая почта равен новой
             if form.cleaned_data['email'] == user.email:
-                form.add_error('email', 'Почта должна отличаться от текущей')
+                form.add_error('email', _('Email should differ from old'))
             else:
                 # Сохраняем код для подверждения в кэше
                 if not cache.get(code_key):
                     cache.set(code_key, str(randint(10000, 99999)), 60)
                     cache.set(email_key, form.cleaned_data['email'], 60)
                 # Отправляем код пользователю
-                send_mail('MicroTests - смена почты',
-                    f'''На сайте был сделан запрос на изменение электронной почты на данный.
-Код для смены почты указан ниже. Если вы этого не делали, то проигнорируйте это письмо.
-Код подверждения: {cache.get(code_key)}
-
-Не пытайтесь отвечать на это письмо. Оно было отправлено автоматически.''',
+                # Translators: сообщение с кодом для подверждения смены почты
+                send_mail(
+                    _('Email changing message subject', 'Email message'), 
+                    _('Email changing message text', 'Email message').format(cache.get(code_key)),
                     'noreply', [form.cleaned_data['email']])
         return HttpResponse(form.errors.as_json())
     return HttpResponseNotFound()
@@ -223,15 +221,11 @@ def register(request):
                 form.cleaned_data['lastName'],
                 form.cleaned_data['password'])
             # Шлем сообщение с ссылкой для активации аккаунта
-            send_mail(
-                'MicroTests - подверждение аккаунта',
-                f'''На ваш адрес электронной почты был зарегестрирован аккаунт на сайте MicroTests. 
-Если вы не регистрировались на нашем сайте, то проигнорируйте это сообщение.
-Для активации аккаунта перейдите по ссылке:
-{request.build_absolute_uri(f'/confirm/?key={user.confirm_key}')}.
-
-Не пытайтесь отвечать на это письмо. Оно было отправлено автоматически.''',
-                'noreply', [user.email])
+            # Translators: сообщения с ссылкой для подверждения регистрации
+            user.send_mail(
+                _('Registration confirm message subject'),
+                _('Registration confirm message text').format(
+                    request.build_absolute_uri(f'/confirm/?key={user.confirm_key}')))
             if not request.is_ajax():
                 return HttpResponseRedirect('/confirm')
         # Отправляем json массив с ошибками, если это ajax запрос
@@ -243,10 +237,10 @@ def register(request):
 def confirm(request):
     """ Страница подвержения аккаунта """
     context = {
-        'subject': 'Регистрация',
-        'title': 'Спасибо за регистрацию.',
-        'message': '''Чтобы закончить регистрацию вы должны перейти по ссылке,
-        указанной в высланном письме на ваш электронный адрес.''',
+        'subject': _('Registration'),
+        'title': _('Thank you for registration.'),
+        # Translators: сообщение говорящее, что необходимо подвердить аккаунт через отправленное письмо
+        'message': _('Registration confirm page text'),
         'buttons': []
     }
     if 'key' in request.GET:
@@ -256,15 +250,31 @@ def confirm(request):
             user.confirm_key = None
             user.is_confirmed = True
             user.save()
-            context['message'] = 'Ваш аккаунт был успешно подвержден. Теперь вы можете войти в него.'
+            # Translators: сообщение, появляющееся после подверждения аккаунта 
+            context['message'] = _('Your account was successful confirm.')
             context['buttons'].append({
-                'text': 'Войти',
+                'text': _('Login'),
                 'url': '/login/'
             })
         except User.DoesNotExist:
             return HttpResponseRedirect('/')
     context['buttons'].append({
-        'text': 'Вернуться на главную',
+        'text': _('Back to main'),
         'url': '/'
     })
     return render(request, 'message.html', context)
+
+
+def read_notify(request):
+    """ Страница, на которую необходимо отправлять пользователя,
+        для того чтобы отметить уведомление прочитанным и переадресовать
+        на его содержание."""
+    if request.method == 'POST' or not request.user.is_authenticated:
+        return HttpResponseRedirect('/')
+    notify_id = request.GET.get('notify_id')
+    if notify_id:
+        notify = Notification.objects.get(id=notify_id, receiving_user=request.user)
+        notify.is_read = True
+        notify.save()
+        return HttpResponseRedirect(notify.url)
+    return HttpResponseRedirect('/')

@@ -18,12 +18,14 @@ function updatePage() {
     let height = $(document).height()
 
     //Если окно открыто в портретном виде
-    if (width <= 730) {
+    if (width <= 870) {
         $('#header-menu').show()
         $('.login-button').hide()
         $('.register-button').hide()
         $('.header-user').hide()
+        $('.header-notifications').hide()
         $('.user-menu').hide()
+        $('.notifications-menu').hide()
         $('header > ul').hide()
         $('.header-logo').css({
             'float': 'none',
@@ -36,6 +38,7 @@ function updatePage() {
         $('.login-button').show()
         $('.register-button').show()
         $('.header-user').show()
+        $('.header-notifications').show()
         $('#header-menu').hide()
         $('.mobile-menu').hide()
         $('.header-logo').css({
@@ -72,11 +75,24 @@ $(document).ready(function(){
     })
     $('.user-menu').hide()
 
+    //При нажатии на меню уведомлений (на десктопе)
+    $('.header-notifications').click(function() {
+        $('.notifications-menu').slideToggle(200)
+    })
+    $('.notifications-menu').hide()
+
+    //При нажатии на уведомление
+    $('.notifications-menu li').click(function(event) {
+        $(event.target).find('.unread-notification-circle').remove()
+    })
+
     //При нажатии на пустом месте
     $(document).click(function(event) {
         //Закрываем, если кликнули мимо
         if ($(event.target).closest('.user-menu, .header-user').length == 0)
             $('.user-menu').slideUp(200)
+        if ($(event.target).closest('.header-notifications, .notifications-menu').length == 0)
+            $('.notifications-menu').slideUp(200)
         if ($(event.target).closest('#header-menu, .mobile-menu').length == 0)
             $('.mobile-menu').slideUp(200)
     })

@@ -2,9 +2,11 @@ from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.utils.translation import gettext_lazy as _
 import MicroTestsApp.utils as utils
 
 
+""" Класс менеджера пользователей """
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
         if not email:
@@ -28,18 +30,22 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
+""" Класс пользователя """
 class User(AbstractBaseUser, PermissionsMixin):
+    class Meta:
+        verbose_name = _('User')
+        verbose_name_plural = _('Users')
+
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=16, verbose_name='Имя')
-    last_name = models.CharField(max_length=16, verbose_name='Фамилия')
-    avatar = models.ImageField(upload_to='avatars', null=True, verbose_name='Аватар')
-    date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
-    last_login = models.DateTimeField(auto_now=True, verbose_name='Последний вход')
-    confirm_key = models.CharField(max_length=32, verbose_name='Ключ для подвержения аккаунта', null=True)
-    is_confirmed = models.BooleanField(default=False, verbose_name='Подвержден-ли')
-    is_active = models.BooleanField(default=True, verbose_name='Активен-ли')
-    is_admin = models.BooleanField(default=False, verbose_name='Является ли администратором')
+    first_name = models.CharField(max_length=16, verbose_name=_('First name'))
+    last_name = models.CharField(max_length=16, verbose_name=_('Last name'))
+    avatar = models.ImageField(upload_to='avatars', null=True, blank=True, verbose_name=_('Avatar'))
+    date_joined = models.DateTimeField(auto_now_add=True, verbose_name=_('Registration date'))
+    last_login = models.DateTimeField(auto_now=True, verbose_name=_('Last login'))
+    confirm_key = models.CharField(max_length=32, verbose_name=_('Confirm key'), null=True)
+    is_confirmed = models.BooleanField(default=False, verbose_name=_('Is confirmed'))
+    is_active = models.BooleanField(default=True, verbose_name=_('Is active'))
+    is_admin = models.BooleanField(default=False, verbose_name=_('Is admin'))
 
     objects = UserManager()
 
@@ -68,3 +74,25 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_admin
+
+    @property
+    def notifications(self):
+        return Notification.objects.filter(receiving_user=self)
+
+    @property
+    def has_unread_notifies(self):
+        return len(Notification.objects.filter(receiving_user=self, is_read=False)) > 0
+
+
+""" Класс уведомления """
+class Notification(models.Model):
+    class Meta:
+        verbose_name=_('Notification')
+        verbose_name_plural=_('Notifications')
+
+    id = models.AutoField(primary_key=True)
+    text = models.CharField(max_length=64, verbose_name=_('Text'))
+    url = models.URLField(verbose_name=_('URL'))
+    is_read = models.BooleanField(default=False, verbose_name=_('Is read'))
+    receiving_user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('Receiving user'))
+    send_date = models.DateTimeField(auto_now=True, verbose_name=_('Send date'))

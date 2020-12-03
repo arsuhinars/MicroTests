@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,33 +20,40 @@
             <img src="{% static 'images/logo_64.png' %}">MicroTests
         </a>
         <ul class="top-menu">
-            <li><a href="/">Главная</a></li>
-            <li><a href="/search_tests">Найти тесты</a></li>
-            <li><a href="/my_tests">Мои тесты</a></li>
+            <li><a href="/">{% trans "Main" %}</a></li>
+            <li><a href="/search_tests">{% trans "Search tests" %}</a></li>
+            <li><a href="/my_tests">{% trans "My tests" %}</a></li>
         </ul>
         {% if not user.is_authenticated  %}
-        <a class="register-button" href="/register">Регистрация</a>
-        <a class="login-button" href="/login">Вход</a>
+            <a class="register-button" href="/register">{% trans "Registration" %}</a>
+            <a class="login-button" href="/login">{% trans "Login" %}</a>
         {% else %}
-        <div class="header-user">
-            {{ user.get_short_name }}
-            {% if user.avatar %}
-            <img src="/{{ user.avatar.url }}">
-            {% else %}
-            <img src="{% static 'images/avatar_64.png' %}">
+            <div class="header-user">
+                {{ user.get_short_name }}
+                {% if user.avatar %}
+                <img src="/{{ user.avatar.url }}">
+                {% else %}
+                <img src="{% static 'images/avatar_64.png' %}">
+                {% endif %}
+            </div>
+            {% if user.is_authenticated %}
+                <div class="header-notifications">
+                    {% trans "Notifications" %}
+                    {% if user.has_unread_notifies %}<div class="notifications-circle"></div>{% endif %}
+                    <img src="{% static 'images/bell_64.png' %}">
+                </div>
             {% endif %}
-        </div>
         {% endif %}
     </header>
     <div class="mobile-menu">
         <ul>
-            <li><a href="/">Главная</a></li>
-            <li><a href="/search_tests">Найти тесты</a></li>
-            <li><a href="/my_tests">Мои тесты</a></li>
+            <li><a href="/">{% trans "Main" %}</a></li>
+            <li><a href="/search_tests">{% trans "Search tests" %}</a></li>
+            <li><a href="/my_tests">{% trans "My tests" %}</a></li>
             <div class="line"></div>
             {% if not user.is_authenticated %}
-            <li><a href="/login">Вход</a></li>
-            <li><a href="/register">Регистрация</a></li>
+            <li><a href="/login">{% trans "Login" %}</a></li>
+            <li><a href="/register">{% trans "Registration" %}</a></li>
             {% else %}
             <li class="mobile-user">
                 {% if user.avatar %}
@@ -55,26 +63,43 @@
                 {% endif %}
                 <span>{{ user.get_short_name }}</span>
             </li>
-            <li><a href="/profile/{{ user.email }}">Мой профиль</a></li>
-            <li><a href="/settings">Настройки</a></li>
-            <li><a href="/logout">Выйти</a></li>
+            <li><a href="/profile/{{ user.email }}">{% trans "My profile" %}</a></li>
+            {% if user.has_unread_notifies %}<li><div class="notifications-circle"></div></li>{% endif %}
+            <li><a href="/settings">{% trans "Settings" %}</a></li>
+            <li><a href="/logout">{% trans "Logout" %}</a></li>
             {% endif %}
         </ul>
     </div>
-    <div class="user-menu">
-        <ul>
-            <li><a href="/profile/{{ user.email }}">Мой профиль</a></li>
-            <li><a href="/settings">Настройки</a></li>
-            <li><a href="/logout">Выйти</a></li>
-        </ul>
-    </div>
+    {% if user.is_authenticated  %}
+        <div class="notifications-menu">
+            <ul>
+                {% for notify in user.notifications %}
+                    <li><a href="/read_notify?notify_id={{ notify.id }}">
+                        {% if not notify.is_read %}
+                            <div class="unread-notification-circle"></div>
+                        {% endif %}
+                        {{ notify.text }}
+                    </a></li>
+                {% empty %}
+                    <li><a>{% trans "You have not notifications." %}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="user-menu">
+            <ul>
+                <li><a href="/profile/{{ user.email }}">{% trans "My profile" %}</a></li>
+                <li><a href="/settings">{% trans "Settings" %}</a></li>
+                <li><a href="/logout">{% trans "Logout" %}</a></li>
+            </ul>
+        </div>
+    {% endif %}
     <main>
         {% block main %}
         {% endblock main %}
     </main>
     <footer>
         <p class="copyright">
-            Создатель сайта: Федоров Арсений<br>
+            {% trans "Site creator" %}: Федоров Арсений<br>
             arsuhinars@gmail.com
         </p>
     </footer>
