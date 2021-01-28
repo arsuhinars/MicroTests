@@ -23,6 +23,7 @@ from MicroTestsApp import views
 urlpatterns = [
     path('', views.index),
     path('profile/<str:email>/', views.profile),
+    path('notifications/', TemplateView.as_view(template_name='notifications.html')),
     path('settings/', views.settings),
     path('change_password/', views.change_password),
     path('change_email/', views.change_email),

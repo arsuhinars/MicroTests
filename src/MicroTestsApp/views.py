@@ -278,3 +278,7 @@ def read_notify(request):
         notify.save()
         return HttpResponseRedirect(notify.url)
     return HttpResponseRedirect('/')
+
+
+""" Класс отрисовщик форматированого текста """
+# class FormatView():

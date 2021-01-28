@@ -1,3 +1,4 @@
+
 let desktopVersionEvent = new Event('desktopVersion')   //События перестройки сайта для настольных систем
 let mobileVersionEvent = new Event('mobileVersion')     //События перестройки сайта для мобильных систем
 
@@ -12,10 +13,12 @@ const errorNames = {
 //Функция обновления расположения объектов
 function updatePage() {
     let footer = $('footer')
-    footer.offset({ left: 0, top: 0 })
+    footer.hide()
 
     let width = $(document).width()
     let height = $(document).height()
+
+    footer.show()
 
     //Если окно открыто в портретном виде
     if (width <= 870) {
@@ -50,45 +53,39 @@ function updatePage() {
 
     //Задаём отступ для подвала, для того чтобы он всегда находился в низу страницы
     let footerOffset = footer.offset()
-    let footerHeight = footer.height() + 10
+    let footerHeight = footer.height()
     if (footerOffset.top - footerHeight < height) {
         footer.offset({
-            top: height - footerHeight,
+            top: height - footerHeight - 2,
             left: footerOffset.left
         })
     }
-
-
 }
 
 $(window).on('load resize', updatePage)
 $(document).ready(function(){
     //При нажатии на мобильное меню
-    $('#header-menu').click(function() {
-        $('.mobile-menu').slideToggle(300)
-    })
+    $('#header-menu').click(() =>
+        $('.mobile-menu').slideToggle(300))
     $('.mobile-menu').hide()
 
     //При нажатии на меню пользователя (на десктопе)
-    $('.header-user').click(function() {
-        $('.user-menu').slideToggle(200)
-    })
+    $('.header-user').click(() =>
+        $('.user-menu').slideToggle(200))
     $('.user-menu').hide()
 
     //При нажатии на меню уведомлений (на десктопе)
-    $('.header-notifications').click(function() {
-        $('.notifications-menu').slideToggle(200)
-    })
+    $('.header-notifications').click(() =>
+        $('.notifications-menu').slideToggle(200))
     $('.notifications-menu').hide()
 
     //При нажатии на уведомление
-    $('.notifications-menu li').click(function(event) {
-        $(event.target).find('.unread-notification-circle').remove()
-    })
+    $('.notifications-menu li').click((event) =>
+        $(event.target).find('.unread-notification-circle').remove())
 
     //При нажатии на пустом месте
-    $(document).click(function(event) {
-        //Закрываем, если кликнули мимо
+    $(document).click((event) => {
+        //Закрываем меню, если кликнули мимо
         if ($(event.target).closest('.user-menu, .header-user').length == 0)
             $('.user-menu').slideUp(200)
         if ($(event.target).closest('.header-notifications, .notifications-menu').length == 0)
@@ -97,7 +94,7 @@ $(document).ready(function(){
             $('.mobile-menu').slideUp(200)
     })
 
-    $('form').each(function (index, form) {
+    $('form').each((index, form) => {
         //При изменении значения поля сбрасываем его ошибки
         $(form).find('input').focus(function (element) {
             $(form).find('.non-field-errors').empty()
@@ -115,7 +112,7 @@ function ajaxSubmitForm(form, success, error) {
     //Блокируем все элементы формы
     $(form).find('input').prop('disabled', true)
 
-    //Отправляем запрос
+    //Отправляем AJAX запрос
     $.ajax({
         type: 'POST',
         data: formData,
@@ -123,7 +120,7 @@ function ajaxSubmitForm(form, success, error) {
         url: $(form).prop('action'),
         processData: false,
         contentType: false,
-        success: function(data) {
+        success: (data) => {
             let result = true
             let nonFieldErrors = $(form).find('.non-field-errors')
             //Очищаем списки ошибок
@@ -133,9 +130,8 @@ function ajaxSubmitForm(form, success, error) {
             for (field in data) {
                 for (error of data[field]) {
                     //Если ошибка не относиться к какому-то полю
-                    if (field == '__all__') {
+                    if (field == '__all__')
                         nonFieldErrors.append($('<li>' + error.message + '</li>'))
-                    }
                     else {
                         $(form).find('#id_' + field).css('border-color', 'red')
                         $(form).find('#' + field + '_errors').append($('<li>' + error.message + '</li>'))
@@ -150,7 +146,7 @@ function ajaxSubmitForm(form, success, error) {
             if (result) if (success) success()
             else if (error) error()
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: (jqXHR, textStatus, errorThrown) => {
             //Получаем текст ошибки
             let errorText = errorNames[textStatus]
             if (errorThrown) errorText += ': ' + errorThrown

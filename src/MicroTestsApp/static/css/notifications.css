@@ -1,0 +1,37 @@
+
+.block {
+    width: 400px;
+    max-width: 70%;
+    margin: 40px auto 0 auto;
+    text-align: center;
+    padding: 1px;
+}
+
+.block ul {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.block a {
+    display: block;
+    text-align: left;
+    line-height: 25px !important;
+    padding: 5px 15px;
+    cursor: pointer;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.block a {
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.block a:hover {
+    background-color: #eeeeee;
+}

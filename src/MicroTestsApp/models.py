@@ -96,3 +96,28 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False, verbose_name=_('Is read'))
     receiving_user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('Receiving user'))
     send_date = models.DateTimeField(auto_now=True, verbose_name=_('Send date'))
+
+
+""" Класс теста """
+class TestModel(models.Model):
+    class Meta:
+        verbose_name=_('Test')
+        verbose_name_plural=_('Tests')
+    
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=32, verbose_name=_('Test name'))
+    author = models.ForeignKey('User', models.CASCADE, verbose_name=_('Author'))
+    create_date = models.DateTimeField(auto_now=True, verbose_name=_('Create date'))
+    is_private = models.BooleanField(default=False, verbose_name=_('Is private'))
+
+
+""" Модель одного задания в тесте """
+class TaskModel(models.Model):
+    class Meta:
+        verbose_name=_('Task')
+        verbose_name_plural=_('Tasks')
+    
+    id = models.AutoField(primary_key=True)
+    test = models.ForeignKey('TestModel', models.CASCADE, verbose_name=_('Test'))
+    name = models.CharField(max_length=32, verbose_name=_('Task name'))
+    description = models.JSONField(verbose_name=_('Task description'))

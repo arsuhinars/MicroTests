@@ -106,16 +106,24 @@ header {
 }
 
 /* Кружочек уведомлений */
-.notifications-circle {
-    position: relative;
-    float: right;
+.notifications-circle, .notifications-circle-mobile {
     background-color: #ff4444;
     width: 8px;
     height: 8px;
     border-radius: 4px;
+}
+
+.notifications-circle {
+    position: relative; 
+    float: right;
     top: 8px;
     right: 3px;
-    /* margin-right: 5px; */
+    margin-right: 5px;
+}
+
+.notifications-circle-mobile {
+    display: inline-block;
+    float: none;
 }
 
 /* Меню авторизованого пользователя */
@@ -275,6 +283,7 @@ footer {
     width: 100%;
     border-top: #dddddd solid 2px;
     background-color: white;
+    height: 50px;
 }
 
 .copyright {

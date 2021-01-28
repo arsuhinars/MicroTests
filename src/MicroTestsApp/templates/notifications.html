@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Main" %}{% endblock %}
+{% block include %}
+<link rel="stylesheet" href="{% static 'css/notifications.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="block">
+    {% if user.is_authenticated  %}
+    <h2 style="display:block;margin-top:20px">Уведомления</h2>
+    <ul>
+        {% for notify in user.notifications %}
+            <li><a href="/read_notify?notify_id={{ notify.id }}">
+                {% if not notify.is_read %}
+                    <div class="unread-notification-circle"></div>
+                {% endif %}
+                {{ notify.text | escape }}
+            </a></li>
+        {% empty %}
+            <li><a>{% trans "You have not notifications." %}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}

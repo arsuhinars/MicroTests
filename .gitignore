@@ -190,4 +190,3 @@ secret_settings.py
 *.bat
 media/
 venv/
-venv_school/

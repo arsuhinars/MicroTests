@@ -40,12 +40,12 @@
                 <div class="header-notifications">
                     {% trans "Notifications" %}
                     {% if user.has_unread_notifies %}<div class="notifications-circle"></div>{% endif %}
-                    <img src="{% static 'images/bell_64.png' %}">
+                    <!-- <img src="{% static 'images/bell_64.png' %}"> -->
                 </div>
             {% endif %}
         {% endif %}
     </header>
-    <div class="mobile-menu">
+    <div class="mobile-menu" style="display: none;">
         <ul>
             <li><a href="/">{% trans "Main" %}</a></li>
             <li><a href="/search_tests">{% trans "Search tests" %}</a></li>
@@ -64,28 +64,34 @@
                 <span>{{ user.get_short_name }}</span>
             </li>
             <li><a href="/profile/{{ user.email }}">{% trans "My profile" %}</a></li>
-            {% if user.has_unread_notifies %}<li><div class="notifications-circle"></div></li>{% endif %}
+            {% if user.has_unread_notifies %}
+            <li><a href="/notifications">{% trans "Notifications" %}
+                <div class="notifications-circle-mobile"></div>
+            </a></li>
+            {% else %}
+            <li><a href="/notifications">{% trans "Notifications" %}</a></li>
+            {% endif %}
             <li><a href="/settings">{% trans "Settings" %}</a></li>
             <li><a href="/logout">{% trans "Logout" %}</a></li>
             {% endif %}
         </ul>
     </div>
     {% if user.is_authenticated  %}
-        <div class="notifications-menu">
+        <div class="notifications-menu" style="display: none;">
             <ul>
                 {% for notify in user.notifications %}
                     <li><a href="/read_notify?notify_id={{ notify.id }}">
                         {% if not notify.is_read %}
                             <div class="unread-notification-circle"></div>
                         {% endif %}
-                        {{ notify.text }}
+                        {{ notify.text | escape }}
                     </a></li>
                 {% empty %}
                     <li><a>{% trans "You have not notifications." %}</a></li>
                 {% endfor %}
             </ul>
         </div>
-        <div class="user-menu">
+        <div class="user-menu" style="display: none;">
             <ul>
                 <li><a href="/profile/{{ user.email }}">{% trans "My profile" %}</a></li>
                 <li><a href="/settings">{% trans "Settings" %}</a></li>
