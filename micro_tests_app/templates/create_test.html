@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+{% block title %}Создать новый тест{% endblock %}
+
+{% block main %}
+<a href="/tests_list" class="btn btn-link p-0 d-block position-absolute" style="width:45px;">
+    <i class="bi bi-chevron-left" style="font-size: 1.8rem;"></i>
+</a>
+
+<h4 class="mt-2 text-center">Создать новый тест</h4>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {% add_css_class_for_label form.name class='form-label mt-3' %}
+
+    {% if not form.name.errors %}
+    <input type="{{ form.name.widget_type }}" class="form-control d-block" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}">
+    {% else %}
+    <input type="{{ form.name.widget_type }}" class="form-control d-block is-invalid" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}">
+    <div class="invalid-feedback">
+    {% for error in form.name.errors %}
+        {{ error }}<br>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    {% add_css_class_for_label form.category class='form-label mt-3' %}
+
+    {% if not form.category.errors %}
+    <input type="{{ form.category.widget_type }}" class="form-control d-block" name="{{ form.category.name }}" value="{{ form.category.value|default_if_none:"" }}">
+    {% else %}
+    <input type="{{ form.category.widget_type }}" class="form-control d-block is-invalid" name="{{ form.category.name }}" value="{{ form.category.value|default_if_none:"" }}">
+    <div class="invalid-feedback">
+    {% for error in form.category.errors %}
+        {{ error }}<br>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    {% add_css_class_for_label form.description class='form-label mt-3' %}
+
+    {% if not form.description.errors %}
+    <textarea rows="3" class="form-control d-block" name="{{ form.description.name }}">{{ form.description.value|default_if_none:"" }}</textarea>
+    {% else %}
+    <textarea rows="3" class="form-control d-block is-invalid" name="{{ form.description.name }}">{{ form.description.value|default_if_none:"" }}</textarea>
+    <div class="invalid-feedback">
+    {% for error in form.description.errors %}
+        {{ error }}<br>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <input type="submit" class="btn btn-primary d-block mt-3 m-auto" value="Создать">
+</form>
+
+{% endblock %}

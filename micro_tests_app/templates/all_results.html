@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Результаты: {{ test.name }}{% endblock %}
+
+{% block main %}
+<style>
+    main {
+        width: auto !important;
+    }
+</style>
+
+<a href="/test/{{ test.id }}" class="btn btn-link p-0 d-block position-absolute" style="width:45px;">
+    <i class="bi bi-chevron-left" style="font-size: 1.8rem;"></i>
+</a>
+
+<h4 class="mt-2 text-center">{{ test.name }}</h4>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>E-Mail</th>
+            <th>Имя</th>
+            <th>Результат</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+        <tr>
+            <th>{{ result.user_id }}</th>
+            <th>{{ result.user_email }}</th>
+            <th>{{ result.user_name }}</th>
+            <th>{{ result.result }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<ul class="pagination justify-content-center">
+    {% if page > 3 %}
+        <li class="page-item">
+            <a class="page-link" href="0">1</a>
+        </li>
+    {% endif %}
+
+    {% for i in pages_before %}
+    <li class="page-item">
+        <a class="page-link" href="{{ i }}">{{ i|add:"1" }}</a>
+    </li>
+    {% endfor %}
+
+    <li class="page-item active">
+        <a class="page-link" href="#">{{ page|add:"1" }}</a>
+    </li>
+
+    {% for i in pages_after %}
+    <li class="page-item">
+        <a class="page-link" href="{{ i }}">{{ i|add:"1" }}</a>
+    </li>
+    {% endfor %}
+
+    {% if page|add:"4" < max_pages %}
+    <li class="page-item">
+        <a class="page-link" href="{{ max_pages|add:"-1" }}">{{ max_pages }}</a>
+    </li>
+    {% endif %}
+</ul>
+
+{% endblock %}

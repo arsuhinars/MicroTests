@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Настройки профиля{% endblock %}
+
+{% block main %}
+<a href="/" class="btn btn-link p-0 d-block position-absolute" style="width:45px;">
+    <i class="bi bi-chevron-left" style="font-size: 1.8rem;"></i>
+</a>
+
+<h4 class="mt-2 text-center">Настройки профиля</h4>
+
+<form method="POST" novalidate>
+{% csrf_token %}
+{% include 'form.html' with form=settings_form %}
+<input type="submit" class="btn btn-primary d-block mt-3 m-auto" value="Сохранить">
+</form>
+
+{% endblock %}

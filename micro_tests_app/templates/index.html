@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+{% block main %}
+<h4 class="text-center mt-2">Добро пожаловать, {{ user.first_name }}!</h4>
+
+<a href="/tests_list" class="btn btn-primary mt-4 w-100">Список тестов</a>
+{% if user.is_admin %}
+<a href="/create_test" class="btn btn-primary mt-2 w-100">Создать тест</a>
+{% endif %}
+
+<a href="/notifications" class="btn btn-secondary mt-5 w-100">
+    Уведомления
+    <span class="badge rounded-pill bg-primary">{{ user.count_unread_notifications|default:"" }}</span>
+</a>
+<a href="/settings" class="btn btn-secondary mt-2 w-100">Настройки профиля</a>
+<a href="/logout" class="btn btn-secondary mt-2 w-100">Выход</a>
+{% endblock %}

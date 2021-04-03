@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block main %}
+<h4 class="text-center">Авторизация</h4>
+<form method="POST" novalidate>
+{% csrf_token %}
+{% include 'form.html' with form=login_form %}
+<input type="submit" class="btn btn-primary d-block mt-3 m-auto" value="Войти">
+</form>
+{% endblock %}

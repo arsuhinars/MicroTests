@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ task.name }}{% endblock %}
+
+{% block main %}
+<h4 class="mt-2 text-center">{{ task.name }}</h4>
+
+<p class="mt-3">
+    {{ task.description|safe }}
+</p>
+
+{% for option in task.options %}
+<div class="form-check">
+    {% if task.type == 0 %}
+    <input class="form-check-input answer-option" type="radio" name="option" value="{{ option.index }}" id="option_{{ option.index }}">
+    {% else %}
+    <input class="form-check-input answer-option" type="checkbox" name="option_{{ option.index }}" id="option_{{ option.index }}">
+    {% endif %}
+    <label class="form-check-label" for="option_{{ option.index }}">{{ option.text }}</label>
+</div>
+{% endfor %}
+<div class="invalid-feedback d-block" id="validationText"></div>
+
+<div class="d-flex w-100 gap-2 mt-4">
+    {% if task_index > 0  %}
+    <a href="/test/{{ task.test.id }}/task/{{ task_index|add:"-1" }}" class="btn btn-secondary" id="back-btn">Назад</a>
+    {% endif %}
+
+    {% if task_index|add:"1" < task_amount  %}
+    <a href="/test/{{ task.test.id }}/task/{{ task_index|add:"1" }}" class="btn btn-secondary ms-auto" id="skip-btn">Пропустить</a>
+    <button class="btn btn-primary" id="save-btn">Ответить</button>
+    {% else %}
+    <button class="btn btn-primary ms-auto" id="save-btn">Отправить</button>
+    {% endif %}
+</div>
+
+<script>
+    // Если текущий тест не был запущен
+    if (sessionStorage.getItem('testId') != {{ task.test.id }}) {
+        document.location.href = '/test/{{ task.test.id }}'
+    } else {
+        // Получаем ответ/список ответов на текущую задачу 
+        let rawAnswers = sessionStorage.getItem('answer_{{ task_index }}')
+
+        let inputs = document.querySelectorAll('.answer-option')
+        let validationText = document.querySelector('#validationText')
+
+        {% if task.type == 0 %}
+        // Парсим единственный ответ на задачу 
+        let answerIndex = parseInt(rawAnswers, 10)
+        if (!isNaN(answerIndex)) {
+            document.querySelector('.answer-option[value="' + answerIndex + '"]').checked = true
+        }
+        {% else %}
+        if (rawAnswers) {
+            // Парсим список ответов на задачу 
+            let answers = JSON.parse(rawAnswers)
+            for (let i = 0; i < answers.length; i++) {
+                document.querySelector('.answer-option[name="option_' + answers[i] + '"]').checked = true
+            }
+        }
+        {% endif %}
+        
+        // Добавляем слушатели, для удаления сообщения об ошибке, при изменении ответов
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('change', () => {
+                for (let j = 0; j < inputs.length; j++) {
+                    inputs[j].classList.remove('is-invalid')
+                }
+                validationText.innerHTML = ''
+            })
+        }
+
+        // Добавляем слушатель кнопки сохранения ответа
+        document.querySelector('#save-btn').addEventListener('click', () => {
+            {% if task.type == 0 %}
+            // Ищем текущий выбранный ответ
+            let input = document.querySelector('.answer-option:checked')
+            if (!input) {   // Если ответ не был выбран
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].classList.add('is-invalid')
+                }
+                validationText.innerHTML = 'Вы должны выбрать вариант ответа.'
+                return
+            }
+        
+            // Сохраняем его
+            sessionStorage.setItem('answer_{{ task_index }}', input.value)
+            {% else %}
+            // Получаем список выбранных ответов
+            let answers = []
+            for (let i = 0; i < {{ task.options|length }}; i++) {
+                if (document.querySelector('.answer-option[name="option_' + i + '"]').checked) {
+                    answers.push(i)
+                }
+            }
+            // Если список пуст
+            if (answers.length == 0) {
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].classList.add('is-invalid')
+                }
+                validationText.innerHTML = 'Вы должны выбрать хотя-бы один из вариантов ответа.'
+                return
+            }
+
+            // Сохраняем их
+            sessionStorage.setItem('answer_{{ task_index }}', JSON.stringify(answers))
+            {% endif %}
+
+            {% if task_index|add:"1" < task_amount %}
+            // Переходим на следующую задачу
+            document.location.href = '/test/{{ task.test.id }}/task/{{ task_index|add:"1" }}'
+            {% else %}
+            // Формируем список всех ответов
+            let answersList = []
+            for (let i = 0; i < {{ task_amount }}; i++) {
+                let answer = sessionStorage.getItem('answer_' + i)
+                if (!answer) {
+                    validationText.innerHTML = 'Вы должны ответить на все вопросы!'
+                    return
+                }
+                answersList.push(JSON.parse(answer))
+            }
+
+            sessionStorage.clear()
+
+            let data = new FormData()
+            data.append('test_id', {{ task.test.id }})
+            data.append('answers', JSON.stringify(answersList))
+
+            // Отправляем их на сервер и ждем результата
+            let promise = fetch('/save_result/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                body: data
+            }).then((response) => {
+                // Если все прошло без ошибок
+                if (response.ok) {
+                    // Перенаправляем пользователя на страницу с результатами
+                    document.location.href = '/test/{{ task.test.id }}/results?just=1'
+                } else {
+                    validationText.innerHTML = 'Произошла ошибка при отправке ответов. Попробуйте ещё раз через некоторое время.'
+                }
+            })
+            {% endif %}
+        })
+    }
+</script>
+
+{% endblock %}

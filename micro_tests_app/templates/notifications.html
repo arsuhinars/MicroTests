@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Уведомления{% endblock %}
+
+{% block main %}
+<a href="/" class="btn btn-link p-0 d-block position-absolute" style="width:45px;">
+    <i class="bi bi-chevron-left" style="font-size: 1.8rem;"></i>
+</a>
+
+<h4 class="mt-2 text-center">Уведомления</h4>
+
+<div class="list-group mt-3">
+    {% for notification in user.get_notifications %}
+    <a href="/notification/{{ notification.id }}" class="list-group-item">
+        {% if notification.has_been_read %}
+        {{ notification.title }}
+        {% else %}
+        <strong>Новое!</strong> {{ notification.title }}
+        {% endif %}
+        <br><small>{{ notification.send_time }}</small>
+    </a>
+    {% empty %}
+    <a class="list-group-item">У вас пока нет уведомлений.</a>
+    {% endfor %}
+</ul>
+
+{% endblock %}

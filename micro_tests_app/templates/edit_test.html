@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+{% block title %}{{ test.name }}{% endblock %}
+
+{% block main %}
+<a href="/test/{{ test.id }}" class="btn btn-link p-0 d-block position-absolute" style="width:45px;">
+    <i class="bi bi-chevron-left" style="font-size: 1.8rem;"></i>
+</a>
+
+<h4 class="mt-2 text-center">{{ test.name }}</h4>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {% add_css_class_for_label form.name class='form-label mt-3' %}
+
+    {% if not form.name.errors %}
+    <input type="{{ form.name.widget_type }}" class="form-control d-block" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}">
+    {% else %}
+    <input type="{{ form.name.widget_type }}" class="form-control d-block is-invalid" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}">
+    <div class="invalid-feedback">
+    {% for error in form.name.errors %}
+        {{ error }}<br>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    {% add_css_class_for_label form.category class='form-label mt-3' %}
+
+    {% if not form.category.errors %}
+    <input type="{{ form.category.widget_type }}" class="form-control d-block" name="{{ form.category.name }}" value="{{ form.category.value|default_if_none:"" }}">
+    {% else %}
+    <input type="{{ form.category.widget_type }}" class="form-control d-block is-invalid" name="{{ form.category.name }}" value="{{ form.category.value|default_if_none:"" }}">
+    <div class="invalid-feedback">
+    {% for error in form.category.errors %}
+        {{ error }}<br>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    {% add_css_class_for_label form.description class='form-label mt-3' %}
+
+    {% if not form.description.errors %}
+    <textarea rows="3" class="form-control d-block" name="{{ form.description.name }}">{{ form.description.value|default_if_none:"" }}</textarea>
+    {% else %}
+    <textarea rows="3" class="form-control d-block is-invalid" name="{{ form.description.name }}">{{ form.description.value|default_if_none:"" }}</textarea>
+    <div class="invalid-feedback">
+    {% for error in form.description.errors %}
+        {{ error }}<br>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="modal fade" id="task-edit-modal">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                </div>
+                <div class="modal-body">
+                    <label for="task-description">Описание задания (допускается использование HTML тегов):</label>
+                    <textarea id="task-description" rows="3" class="form-control"></textarea>
+
+                    <label for="task-type-select" class="mt-3">Тип ответов на задания: </label>
+                    <select id="task-type-select" class="form-select">
+                        <option>Только один вариант ответа</option>
+                        <option>Несколько ответов</option>
+                    </select>
+
+                    <p class="mt-3">Варианты ответов: </p>
+                    <ul id="options-list" class="list-group">
+                        
+                    </ul>
+                    <button class="btn btn-secondary d-block mt-2 mx-auto" id="add-option-btn">Добавить вариант ответа</button>
+
+                    <label for="answers" class="mt-3">Правильные ответы (перечислять индексы ответов через запятую): </label>
+                    <input type="text" name="answers" id="answers" class="form-control">
+                    <div id="invalid-answers-input" class="invalid-feedback"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="task-remove-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button class="btn btn-danger" id="delete-task-btn">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="mt-5">Список задач: </p>
+    <ul id="tasks-list" class="list-group"></ul>
+
+    <button id="add-task-btn" class="btn btn-secondary d-block mt-2 mx-auto">Добавить задание</button>
+
+    <input id="save-btn" type="submit" class="btn btn-primary d-block mt-5 m-auto w-100" value="Сохранить">
+    <div class="invalid-feedback">Произошла ошибка при отправке! Попробуйте ещё раз через некоторое время.</div>
+</form>
+
+<script>
+    // Список объектов всех задач
+    let tasks = [
+    {% for task in tasks %}
+        {
+            "name": "{{ task.name|escapejs }}",
+            "description": "{{ task.description|escapejs }}",
+            "type": {{ task.type|escapejs }},
+            "options": JSON.parse("{{ task.options|escapejs }}"),
+            "answers": JSON.parse("{{ task.answers|escapejs }}")
+        },
+    {% endfor %}
+    ]
+
+    // Элемент списка задач
+    let tasksList = document.querySelector('#tasks-list')
+
+    // Окно редактирования задачи
+    let taskEditModal = new bootstrap.Modal(document.querySelector('#task-edit-modal'))
+    // Поле для ввода описания задания
+    let taskDescription = document.querySelector('#task-description')
+    // Элемент выбора типа задачи
+    let taskTypeSelect = document.querySelector('#task-type-select')
+    // Список вариантов ответов задачи
+    let optionsList = document.querySelector('#options-list')
+    // Поле для ввода ответов на задачу
+    let answersInput = document.querySelector('#answers')
+    // Текст с ошибками ввода ответов задачи
+    let invalidAnswersInput = document.querySelector('#invalid-answers-input')
+
+    // Окно подверждения удаления задачи
+    let taskRemoveModal = new bootstrap.Modal(document.querySelector('#task-remove-modal'))
+    // Индекс задачи, которая будет удалена
+    let taskRemoveIndex = -1
+
+    // Кнопка для сохранения изменений
+    let saveButton = document.querySelector('#save-btn')
+
+    // Функция обновления списка задач
+    function updateTasksList() {
+        tasksList.innerHTML = ''
+        for (let i = 0; i < tasks.length; i++) {
+            let task = document.createElement('li')
+            task.setAttribute('class', 'list-group-item d-flex align-items-center flex-wrap')
+
+            let taskIndex = i
+
+            let nameInput = document.createElement('input')
+            nameInput.id = 'task-name-' + i
+            nameInput.type = 'text'
+            nameInput.setAttribute('class', 'form-control flex-grow-1 me-2')
+            nameInput.style.width = '0'
+            nameInput.style.minWidth = '180px'
+            nameInput.value = tasks[i].name
+            nameInput.onchange = (e) => {
+                tasks[taskIndex].name = nameInput.value
+            }
+
+            let iconContainer = document.createElement('div')
+            iconContainer.setAttribute('class', 'mx-auto')
+
+            let moveUpBtn = document.createElement('button')
+            moveUpBtn.setAttribute('class', 'btn btn-link')
+            moveUpBtn.innerHTML = '<i class="bi bi-chevron-double-up"></i>'
+            moveUpBtn.style.padding = '2px 6px'
+            moveUpBtn.disabled = (i == 0)
+            moveUpBtn.onclick = (e) => {
+                e.preventDefault()
+                tasks = tasks.slice(0, taskIndex - 1)
+                    .concat(tasks[taskIndex], tasks[taskIndex - 1], tasks.slice(taskIndex + 1))
+                updateTasksList()
+            }
+
+            let moveDownBtn = document.createElement('button')
+            moveDownBtn.setAttribute('class', 'btn btn-link')
+            moveDownBtn.innerHTML = '<i class="bi bi-chevron-double-down"></i>'
+            moveDownBtn.style.padding = '2px 6px'
+            moveDownBtn.disabled = (i + 1 == tasks.length)
+            moveDownBtn.onclick = (e) => {
+                e.preventDefault()
+                tasks = tasks.slice(0, taskIndex)
+                    .concat(tasks[taskIndex + 1], tasks[taskIndex], tasks.slice(taskIndex + 2))
+                updateTasksList()
+            }
+
+            let editBtn = document.createElement('button')
+            editBtn.setAttribute('class', 'btn btn-link')
+            editBtn.innerHTML = '<i class="bi bi-pencil"></i>'
+            editBtn.style.padding = '2px 6px'
+            editBtn.onclick = (e) => {
+                e.preventDefault()
+                editTask(taskIndex)
+            }
+
+            let removeBtn = document.createElement('button')
+            removeBtn.setAttribute('class', 'btn btn-link')
+            removeBtn.innerHTML = '<i class="bi bi-x"></i>'
+            removeBtn.style.padding = '2px 6px'
+            removeBtn.onclick = (e) => {
+                e.preventDefault()
+                taskRemoveIndex = taskIndex
+
+                let title = document.querySelector('#task-remove-modal .modal-title')
+                let body = document.querySelector('#task-remove-modal .modal-body')
+
+                title.innerHTML = 'Удалить "' + tasks[taskIndex].name + '"'
+                body.innerHTML = 'Вы уверены, что хотите удалить задание "' + tasks[taskIndex].name + '"?'
+
+                taskRemoveModal.show()
+            }
+
+            iconContainer.append(moveUpBtn)
+            iconContainer.append(moveDownBtn)
+            iconContainer.append(editBtn)
+            iconContainer.append(removeBtn)
+
+            task.append(nameInput)
+            task.append(iconContainer)
+
+            tasksList.append(task)
+        }
+    }
+
+    // Ссылка на текущую задачу
+    let currentTask
+
+    // Функция отображения редактора текущей задачи
+    function editTask(taskIndex) {
+        let title = document.querySelector('#task-edit-modal .modal-title')
+        let body = document.querySelector('#task-edit-modal .modal-body')
+    
+        title.innerHTML = 'Редактировать "' + tasks[taskIndex].name + '"'
+        
+        currentTask = tasks[taskIndex]
+
+        invalidAnswersInput.innerHTML = ''
+        if (currentTask.type == 0) {
+            answersInput.value = !isNaN(currentTask.answers) ? currentTask.answers : ''
+        } else {
+            answersInput.value = currentTask.answers instanceof Array ? currentTask.answers.join(', ') : ''
+        }
+        taskDescription.value = currentTask.description
+        taskTypeSelect.selectedIndex = currentTask.type
+
+        updateEditModal()
+
+        taskEditModal.show()
+    }
+
+    function updateEditModal() {
+        optionsList.innerHTML = ''
+
+        let options = currentTask.options
+        for (let i = 0; i < options.length; i++) {
+            let option = document.createElement('li')
+            option.setAttribute('class', 'list-group-item d-flex align-items-center flex-wrap')
+
+            let optionIndex = i
+
+            let textInput = document.createElement('input')
+            textInput.id = 'option-name-' + i
+            textInput.type = 'text'
+            textInput.setAttribute('class', 'form-control flex-grow-1 me-2')
+            textInput.style.width = '0'
+            textInput.style.minWidth = '180px'
+            textInput.value = options[i]
+            textInput.onchange = (e) => {
+                currentTask.options[optionIndex] = textInput.value
+            }
+
+            let iconContainer = document.createElement('div')
+            iconContainer.setAttribute('class', 'mx-auto')
+
+            let moveUpBtn = document.createElement('button')
+            moveUpBtn.setAttribute('class', 'btn btn-link')
+            moveUpBtn.innerHTML = '<i class="bi bi-chevron-double-up"></i>'
+            moveUpBtn.style.padding = '2px 6px'
+            moveUpBtn.disabled = (i == 0)
+            moveUpBtn.onclick = (e) => {
+                e.preventDefault()
+                currentTask.options = options.slice(0, optionIndex - 1)
+                    .concat(options[optionIndex], options[optionIndex - 1], options.slice(optionIndex + 1))
+                updateEditModal()
+            }
+
+            let moveDownBtn = document.createElement('button')
+            moveDownBtn.setAttribute('class', 'btn btn-link')
+            moveDownBtn.innerHTML = '<i class="bi bi-chevron-double-down"></i>'
+            moveDownBtn.style.padding = '2px 6px'
+            moveDownBtn.disabled = (i + 1 == options.length)
+            moveDownBtn.onclick = (e) => {
+                e.preventDefault()
+                currentTask.options = options.slice(0, optionIndex)
+                    .concat(options[optionIndex + 1], options[optionIndex], options.slice(optionIndex + 2))
+                updateEditModal()
+            }
+
+            let removeBtn = document.createElement('button')
+            removeBtn.setAttribute('class', 'btn btn-link')
+            removeBtn.innerHTML = '<i class="bi bi-x"></i>'
+            removeBtn.style.padding = '2px 6px'
+            removeBtn.onclick = (e) => {
+                e.preventDefault()
+                currentTask.options.splice(optionIndex, 1)
+                updateEditModal()
+            }
+
+            iconContainer.append(moveUpBtn)
+            iconContainer.append(moveDownBtn)
+            iconContainer.append(removeBtn)
+
+            option.append(textInput)
+            option.append(iconContainer)
+
+            optionsList.append(option)
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => updateTasksList())
+    document.querySelector('#add-task-btn').onclick = (e) => {
+        e.preventDefault()
+        tasks.push({
+            'name': 'Новое задание #' + (tasks.length + 1),
+            'description': '',
+            'type': 0,
+            'options': [],
+            'answers': 0
+        })
+        updateTasksList()
+    }
+    document.querySelector('#delete-task-btn').onclick = (e) => {
+        e.preventDefault()
+        if (taskRemoveIndex != -1) {
+            tasks.splice(taskRemoveIndex, 1)
+            updateTasksList()
+        }
+        taskRemoveModal.hide()
+    }
+    document.querySelector('#add-option-btn').onclick = (e) => {
+        e.preventDefault()
+        currentTask.options.push('')
+        updateEditModal()
+    }
+    taskDescription.onchange = (e) => {
+        currentTask.description = e.target.value
+    }
+    taskTypeSelect.onchange = (e) => {
+        currentTask.type = e.target.selectedIndex
+    }
+    answersInput.oninput = (e) => {
+        let answers = e.target.value.split(',').filter(s => s.trim().length > 0).map(s => parseInt(s))
+
+        let hasErrors = false
+        let errorText = ''
+        if (answers.some(i => isNaN(i) || i < 0 || i >= currentTask.options.length)) {
+            hasErrors = true
+            errorText += 'Список должен содержать только числа - индексы ответов (от 0 до ' + (currentTask.options.length - 1) + ')'
+        } else if (currentTask.type == 0 && answers.length > 1) {
+            hasErrors = true
+            errorText += 'У этого типа вопроса может быть только один вариант ответа'
+        }
+
+        if (currentTask.type == 0) {
+            answers = answers.length == 1 ? answers[0] : 0
+        }
+        
+        if (hasErrors) {
+            e.target.classList.add('is-invalid')
+            invalidAnswersInput.innerHTML = errorText
+        } else {
+            e.target.classList.remove('is-invalid')
+            currentTask.answers = answers
+        }
+    }
+    document.querySelector('#task-remove-modal').addEventListener('hide.bs.modal', () => taskRemoveIndex = -1)
+    document.querySelector('#task-edit-modal').addEventListener('hide.bs.modal', () => currentTask = null)
+    saveButton.onclick = (e) => {
+        e.preventDefault()
+        saveButton.classList.remove('is-invalid')
+        
+        let data = new FormData()
+        data.append('name', document.querySelector('input[name="name"]'))
+        data.append('category', document.querySelector('input[name="category"]'))
+        data.append('description', document.querySelector('input[name="description"]'))
+
+        //Отправляем запрос на изменение задач
+        fetch('/test/{{ test.id }}/edit_tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify(tasks)
+        }).then((response) => {
+            if (!response.ok) {
+                saveButton.classList.add('is-invalid')
+                return
+            }
+            document.querySelector('form').submit()
+        })
+    }
+
+</script>
+
+{% endblock %}
