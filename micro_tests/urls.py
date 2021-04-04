@@ -16,6 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+# Кастомные страницы ошибок
+handler404 = 'micro_tests_app.views.handler404'
+handler500 = 'micro_tests_app.views.handler500'
+handler403 = 'micro_tests_app.views.handler403'
+handler400 = 'micro_tests_app.views.handler400'
+
 urlpatterns = [
     path('', include('micro_tests_app.urls')),
     path('admin/', admin.site.urls),

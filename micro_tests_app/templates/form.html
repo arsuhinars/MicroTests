@@ -2,12 +2,12 @@
 {% load custom_tags %}
 
 {% for field in form %}
-{% add_css_class_for_label field class='form-label mt-3' %}<br>
+{% add_attrs_for_label field class='form-label mt-3' %}<br>
 
 {% if not field.errors %}
-<input type="{{ field.widget_type }}" class="form-control d-block" name="{{ field.name }}" value="{{ field.value|default_if_none:"" }}">
+{% add_attrs_for_field field class='form-control d-block' %}
 {% else %}
-<input type="{{ field.widget_type }}" class="form-control d-block is-invalid" name="{{ field.name }}" value="{{ field.value|default_if_none:"" }}">
+{% add_attrs_for_field field class='form-control d-block is-invalid' %}
 <div class="invalid-feedback">
 {% for error in field.errors %}
     {{ error }}<br>
@@ -16,14 +16,3 @@
 {% endif %}
 
 {% endfor %}
-
-{% comment %}
-{% if form.non_field_errors %}
-<input type="hidden" class="is-invalid"></input>
-<div class="invalid-feedback">
-{% for error in form.non_field_errors %}
-    {{ error }}<br>
-{% endfor %}
-</div>
-{% endif %}
-{% endcomment %}

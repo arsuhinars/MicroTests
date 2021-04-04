@@ -7,6 +7,38 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import *
 
+def handler404(request, exception):
+    """ Обработчик ошибки 404 - не найдено """
+    return render(request, 'error.html', {
+        'title': 'Страница не найдена!',
+        'message': 'Страница, которую вы пытаетесь найти, не существует.'
+    })
+
+
+def handler500(request):
+    """ Обработчик ошибки 500 - внутренняя ошибка сервера """
+    return render(request, 'error.html', {
+        'title': 'Произошла ошибка!',
+        'message': 'Произошла внутренняя ошибка сервера. Попробуйте перезагрузить страницу или зайти на неё позже.'
+    })
+
+
+def handler403(request, exception):
+    """ Обработчик ошибки 403 - доступ запрещен """
+    return render(request, 'error.html', {
+        'title': 'Доступ запрещен!',
+        'message': 'У вас недостаточно прав для того, чтобы посетить данную страницу.'
+    })
+
+
+def handler400(request, exception):
+    """ Обработчик ошибки 400 - неправильный формат запроса """
+    return render(request, 'error.html', {
+        'title': 'Неправильный запрос!',
+        'message': 'Обнаружена ошибка в формате запроса данной страницы. Попробуйте перезагрузить её или зайти позже.'
+    })
+
+
 def authorization(request):
     """ Страница авторизации """
 
