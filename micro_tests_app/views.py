@@ -451,6 +451,22 @@ def edit_test_tasks(request, test_id):
                 options=json.dumps(task_data['options']),
                 answers=json.dumps(task_data['answers']))
             new_task.save()
-            tasks.append(new_task)
 
     return HttpResponse('ok')
+
+
+@login_required
+def delete_test(request, test_id):
+    """ Страница для удаления теста """
+
+    if not request.user.is_admin:
+        return HttpResponseForbidden()
+    
+    try:
+        test = TestModel.objects.get(id=test_id)
+    except TestModel.DoesNotExist:
+        return HttpResponseNotFound()
+
+    test.delete()
+    
+    return HttpResponseRedirect('/tests_list')

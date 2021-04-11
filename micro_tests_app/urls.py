@@ -18,6 +18,7 @@ urlpatterns = [
     path('test/<int:test_id>/all_results/<int:page>', all_results),
     path('test/<int:test_id>/edit', edit_test),
     path('test/<int:test_id>/edit_tasks', edit_test_tasks),
+    path('test/<int:test_id>/delete', delete_test),
     path('save_result/', save_result),
     path('create_test/', create_test),
 ]

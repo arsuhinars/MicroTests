@@ -11,15 +11,15 @@
 
 <h4 class="mt-2 text-center">Создать новый тест</h4>
 
-<form method="POST">
+<form method="POST" novalidate>
     {% csrf_token %}
 
-    {% add_css_class_for_label form.name class='form-label mt-3' %}
+    {% add_attrs_for_label form.name class='form-label mt-3' %}
 
     {% if not form.name.errors %}
-    <input type="{{ form.name.widget_type }}" class="form-control d-block" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}">
+    {% add_attrs_for_field form.name class='form-control d-block' %}
     {% else %}
-    <input type="{{ form.name.widget_type }}" class="form-control d-block is-invalid" name="{{ form.name.name }}" value="{{ form.name.value|default_if_none:"" }}">
+    {% add_attrs_for_field form.name class='form-control d-block is-invalid' %}
     <div class="invalid-feedback">
     {% for error in form.name.errors %}
         {{ error }}<br>
@@ -27,12 +27,12 @@
     </div>
     {% endif %}
 
-    {% add_css_class_for_label form.category class='form-label mt-3' %}
+    {% add_attrs_for_label form.category class='form-label mt-3' %}
 
     {% if not form.category.errors %}
-    <input type="{{ form.category.widget_type }}" class="form-control d-block" name="{{ form.category.name }}" value="{{ form.category.value|default_if_none:"" }}">
+    {% add_attrs_for_field form.category class='form-control d-block' %}
     {% else %}
-    <input type="{{ form.category.widget_type }}" class="form-control d-block is-invalid" name="{{ form.category.name }}" value="{{ form.category.value|default_if_none:"" }}">
+    {% add_attrs_for_field form.category class='form-control d-block is-invalid' %}
     <div class="invalid-feedback">
     {% for error in form.category.errors %}
         {{ error }}<br>
@@ -40,7 +40,7 @@
     </div>
     {% endif %}
 
-    {% add_css_class_for_label form.description class='form-label mt-3' %}
+    {% add_attrs_for_label form.description class='form-label mt-3' %}
 
     {% if not form.description.errors %}
     <textarea rows="3" class="form-control d-block" name="{{ form.description.name }}">{{ form.description.value|default_if_none:"" }}</textarea>
