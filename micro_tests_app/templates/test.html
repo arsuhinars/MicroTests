@@ -30,7 +30,25 @@
 <a href="/test/{{ test.id }}/all_results/0" class="btn btn-secondary mt-2 w-100">Все результаты</a>
 
 <a href="/test/{{ test.id }}/edit" class="btn btn-primary mt-4 w-100">Редактировать тест</a>
-<a href="/test/{{ test.id }}/delete" class="btn btn-danger mt-2 w-100">Удалить тест</a>
+<button class="btn btn-danger mt-2 w-100" data-bs-toggle="modal" data-bs-target="#task-delete-modal">Удалить тест</button>
+
+<div class="modal fade" id="task-delete-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удалить {{ test.name }}</h5>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить тест {{ test.name }}?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <a href="/test/{{ test.id }}/delete" class="btn btn-danger">Удалить</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endif %}
 
 <script>
