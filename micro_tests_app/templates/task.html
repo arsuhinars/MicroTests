@@ -17,7 +17,7 @@
     {% else %}
     <input class="form-check-input answer-option" type="checkbox" name="option_{{ option.index }}" id="option_{{ option.index }}">
     {% endif %}
-    <label class="form-check-label" for="option_{{ option.index }}">{{ option.text }}</label>
+    <label class="form-check-label" for="option_{{ option.index }}">{{ option.text|safe }}</label>
 </div>
 {% endfor %}
 <div class="invalid-feedback d-block" id="validationText"></div>
