@@ -1,4 +1,5 @@
 # MicroTests
+<img src="https://user-images.githubusercontent.com/36979003/127556040-7da7abd4-da24-4f9c-85b9-0495491e9b1e.png" height="300"> <img src="https://user-images.githubusercontent.com/36979003/127556127-158dd598-e264-416d-a177-4ee1ec7ebace.png" height="300"> <img src="https://user-images.githubusercontent.com/36979003/127556192-49dc86fc-3c37-41de-86ad-0e3cf85b4ce1.png" height="300"><br>
 Небольшой сайт на Django, на котором вы сможете составлять и проходить свои тесты. Здесь присутствует система авторизации для сохранения результатов.
 При создании сайта был использован CSS-фреймворк [Boostrap](https://getbootstrap.com/). Опробовать сайт вы можете по [ссылке](http://arsuhinars.pythonanywhere.com/).
 
